@@ -1,0 +1,91 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { background: #ffffff; }
+
+body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', system-ui, Helvetica, Arial, sans-serif;
+  color: #1d1d1f;
+}
+
+#root {
+  width: 100%;
+}
+
+.scrollarea { scrollbar-width: none; }
+.scrollarea::-webkit-scrollbar { display: none; }
+
+/* ── Keyframes ── */
+@keyframes pf-float {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+@keyframes pf-breathe {
+  0%, 100% { opacity: .30; transform: translateX(-50%) scale(1); }
+  50%       { opacity: .48; transform: translateX(-50%) scale(1.07); }
+}
+@keyframes pf-sheen {
+  0%   { transform: translateX(-130%) rotate(11deg); opacity: 0; }
+  12%  { opacity: .9; }
+  30%  { opacity: 0; }
+  100% { transform: translateX(240%) rotate(11deg); opacity: 0; }
+}
+@keyframes pf-rise {
+  0%   { opacity: 0; transform: translateY(52px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes pf-fade {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+@keyframes pf-iconpop {
+  0%   { opacity: 0; transform: scale(.42) translateY(10px); }
+  72%  { opacity: 1; }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes pf-appin {
+  0%   { opacity: 0; transform: scale(.9); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes pf-panel {
+  0%   { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+@keyframes pf-chip {
+  0%   { opacity: 0; transform: translateY(11px) scale(.92); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes pf-card {
+  0%   { opacity: 0; transform: translateX(-28px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+@keyframes pf-line {
+  0%   { transform: scaleY(0); }
+  100% { transform: scaleY(1); }
+}
+
+/* ── Layout ── */
+.pf-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(28px, 4.5vw, 72px);
+  width: 100%;
+  max-width: 1280px;
+}
+.pf-phonecol { display: flex; justify-content: center; }
+
+@media (max-width: 1099px) {
+  .pf-layout {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    justify-items: center;
+  }
+  .pf-phonecol { order: -1; }
+  .pf-panel { max-width: 620px; width: 100%; max-height: none !important; }
+}
+@media (max-width: 560px) {
+  .pf-stage { padding: 32px 18px 64px !important; }
+}
