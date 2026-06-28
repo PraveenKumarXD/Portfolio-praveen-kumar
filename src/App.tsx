@@ -557,9 +557,10 @@ export default function App() {
 
   // ── Products ──
   const [products, setProducts] = useState<Product[]>([]);
+  const [productsLoading, setProductsLoading] = useState(true);
   useEffect(() => {
     supabase.from("products").select("*").order("created_at")
-      .then(({ data }) => { if (data) setProducts(data as Product[]); });
+      .then(({ data }) => { if (data) setProducts(data as Product[]); setProductsLoading(false); });
   }, []);
   const createProduct = async () => {
     const p: Product = { id: crypto.randomUUID(), text: "New Product", link: "#", image: "", description: "", sections: [] };
@@ -577,9 +578,10 @@ export default function App() {
 
   // ── Experiments ──
   const [experiments, setExperiments] = useState<Experiment[]>([]);
+  const [experimentsLoading, setExperimentsLoading] = useState(true);
   useEffect(() => {
     supabase.from("experiments").select("*").order("created_at")
-      .then(({ data }) => { if (data) setExperiments(data as Experiment[]); });
+      .then(({ data }) => { if (data) setExperiments(data as Experiment[]); setExperimentsLoading(false); });
   }, []);
   const createExperiment = async () => {
     const e: Experiment = { id: crypto.randomUUID(), text: "New Experiment", link: "#", image: "", description: "", sections: [], height: 300 };
@@ -1085,12 +1087,14 @@ export default function App() {
             ) : current.id === "products" ? (
               <ProductsSection
                 products={products}
+                loading={productsLoading}
                 onUpdate={updateProduct}
                 onDelete={deleteProduct}
               />
             ) : current.id === "experiments" ? (
               <ExperimentsSection
                 experiments={experiments}
+                loading={experimentsLoading}
                 onUpdate={updateExperiment}
                 onDelete={deleteExperiment}
               />
@@ -3333,12 +3337,32 @@ function ProductPage({
 }
 
 /* ── ProductsSection ── */
+function SectionLoader() {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100%", gap: 16, color: T.t5 }}>
+      <div style={{ display: "flex", gap: 8 }}>
+        {[0, 1, 2].map(i => (
+          <div key={i} style={{
+            width: 8, height: 8, borderRadius: "50%", background: T.t6,
+            animation: "pulse 1.2s ease-in-out infinite",
+            animationDelay: `${i * 0.2}s`,
+          }} />
+        ))}
+      </div>
+      <style>{`@keyframes pulse { 0%,80%,100%{opacity:.2;transform:scale(.8)} 40%{opacity:1;transform:scale(1)} }`}</style>
+      <span style={{ fontSize: 13, fontFamily: T.font }}>Loading…</span>
+    </div>
+  );
+}
+
 function ProductsSection({
   products,
+  loading,
   onUpdate,
   onDelete,
 }: {
   products: Product[];
+  loading: boolean;
   onUpdate: (id: string, patch: Partial<Product>) => void;
   onDelete: (id: string) => void;
 }) {
@@ -3358,6 +3382,8 @@ function ProductsSection({
       />
     );
 
+  if (loading) return <SectionLoader />;
+
   return (
     <div style={{ height: "100%", position: "relative" }}>
       <FlowingMenu
@@ -3375,8 +3401,9 @@ function ProductsSection({
 }
 
 /* ── ExperimentsSection ── */
-function ExperimentsSection({ experiments, onUpdate, onDelete }: {
+function ExperimentsSection({ experiments, loading, onUpdate, onDelete }: {
   experiments: Experiment[];
+  loading: boolean;
   onUpdate: (id: string, patch: Partial<Experiment>) => void;
   onDelete: (id: string) => void;
 }) {
@@ -3391,6 +3418,8 @@ function ExperimentsSection({ experiments, onUpdate, onDelete }: {
       onDelete={() => { onDelete(selected.id); setSelectedId(null); }}
     />
   );
+
+  if (loading) return <SectionLoader />;
 
   const masonryItems = experiments.map(e => ({ id: e.id, img: e.image || `https://picsum.photos/600/400?random=${e.id}`, url: e.link || '#', height: e.height }));
 
