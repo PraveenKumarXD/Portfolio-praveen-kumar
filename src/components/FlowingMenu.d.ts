@@ -1,7 +1,8 @@
 import { FC } from "react";
 
 interface FlowingMenuProps {
-  items?: { text: string; image: string; link: string; description?: string; [key: string]: unknown }[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  items?: any[];
   speed?: number;
   textColor?: string;
   bgColor?: string;
