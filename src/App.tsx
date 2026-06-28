@@ -100,6 +100,8 @@ const T = {
   t7: "#46464c",
   m4: "#26262a",
   m5: "#1c1c1f",
+  m6: "#141416",
+  accent: "#6e56cf",
   font: "'Geist Variable', ui-sans-serif, system-ui, sans-serif",
   mono: "ui-monospace, 'SF Mono', 'Fira Code', monospace",
 };
